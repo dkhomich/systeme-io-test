@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>Tax calculator</h1>
+                {{ form(calculatorForm) }}
+
+            </div>
+        </div>
+
+        {% if calculationResult %}
+            <div class="row">
+                <h2>Calculation result</h2>
+                <p>Product: {{ calculationResult.product.name }}</p>
+                <p>Price: {{ calculationResult.product.price }} EUR</p>
+                <p>Tax: {{ calculationResult.taxAmount }} EUR ({{ calculationResult.country.taxRate.value }}% for {{ calculationResult.country.name }})</p>
+                <p>Total: {{ calculationResult.taxAmount + calculationResult.product.price}} EUR</p>
+
+
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
