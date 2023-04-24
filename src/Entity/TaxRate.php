@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\TaxRateRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TaxRateRepository::class)]
 class TaxRate
@@ -14,11 +17,16 @@ class TaxRate
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\PositiveOrZero]
     private ?float $value = null;
 
-    #[ORM\OneToOne(inversedBy: 'taxRate', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Country $country = null;
+    #[ORM\OneToMany(mappedBy: 'taxRate', targetEntity: Country::class)]
+    private Collection $countries;
+
+    public function __construct()
+    {
+        $this->countries = new ArrayCollection();
+    }
 
     public function __toString(): string
     {
@@ -42,14 +50,32 @@ class TaxRate
         return $this;
     }
 
-    public function getCountry(): ?Country
+    /**
+     * @return Collection<int, Country>
+     */
+    public function getCountries(): Collection
     {
-        return $this->country;
+        return $this->countries;
     }
 
-    public function setCountry(Country $country): self
+    public function addCountry(Country $country): self
     {
-        $this->country = $country;
+        if (!$this->countries->contains($country)) {
+            $this->countries->add($country);
+            $country->setTaxRate($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCountry(Country $country): self
+    {
+        if ($this->countries->removeElement($country)) {
+            // set the owning side to null (unless already changed)
+            if ($country->getTaxRate() === $this) {
+                $country->setTaxRate(null);
+            }
+        }
 
         return $this;
     }

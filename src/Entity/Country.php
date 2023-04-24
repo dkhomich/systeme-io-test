@@ -21,7 +21,8 @@ class Country
     #[ORM\OneToMany(mappedBy: 'country', targetEntity: TaxNumberPattern::class, orphanRemoval: true)]
     private Collection $taxNumberPatterns;
 
-    #[ORM\OneToOne(mappedBy: 'country', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'countries')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?TaxRate $taxRate = null;
 
     public function __construct()
@@ -91,13 +92,8 @@ class Country
         return $this->taxRate?->getValue();
     }
 
-    public function setTaxRate(TaxRate $taxRate): self
+    public function setTaxRate(?TaxRate $taxRate): self
     {
-        // set the owning side of the relation if necessary
-        if ($taxRate->getCountry() !== $this) {
-            $taxRate->setCountry($this);
-        }
-
         $this->taxRate = $taxRate;
 
         return $this;

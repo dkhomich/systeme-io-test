@@ -36,7 +36,7 @@ class AppFixtures extends Fixture
                 ->setName($fixture['name']);
             $taxRate = (new TaxRate())
                 ->setValue($fixture['taxRate'])
-                ->setCountry($country);
+                ->addCountry($country);
             $taxNumberPattern = (new TaxNumberPattern())
                 ->setPattern($fixture['taxNumberPattern'])
                 ->setCountry($country);

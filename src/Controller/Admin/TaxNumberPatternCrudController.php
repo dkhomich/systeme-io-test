@@ -17,7 +17,8 @@ class TaxNumberPatternCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield TextField::new('pattern');
+        yield TextField::new('pattern')
+        ->setHelp('Enter a valid RegEx pattern');
         yield AssociationField::new('country');
     }
 

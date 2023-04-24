@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Country;
+use App\Repository\TaxRateRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -11,6 +12,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class CountryCrudController extends AbstractCrudController
 {
+    public function __construct(private readonly TaxRateRepository $taxRateRepository)
+    {
+    }
+
     public static function getEntityFqcn(): string
     {
         return Country::class;
