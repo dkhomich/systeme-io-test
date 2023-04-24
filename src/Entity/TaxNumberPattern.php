@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\TaxNumberPatternRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: TaxNumberPatternRepository::class)]
 class TaxNumberPattern
@@ -52,5 +54,20 @@ class TaxNumberPattern
         $this->country = $country;
 
         return $this;
+    }
+
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context): void
+    {
+        if ($this->pattern !== null) {
+            // suppress E_WARNING temporarily for invalid regex
+            set_error_handler(static fn() => true, E_WARNING);
+            if (preg_match($this->pattern, '') === false) {
+                $context->buildViolation('This expression is not a valid RegEx with delimiters')
+                    ->atPath('pattern')
+                    ->addViolation();
+            }
+            restore_error_handler();
+        }
     }
 }
