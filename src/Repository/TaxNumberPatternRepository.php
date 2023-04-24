@@ -42,35 +42,10 @@ class TaxNumberPatternRepository extends ServiceEntityRepository
     public function getMatchedByTaxNumber(string $taxNumber): ?TaxNumberPattern
     {
         foreach ($this->findAll() as $taxNumberPattern) {
-            if (preg_match($taxNumberPattern->getPattern(), $taxNumber)) {
+            if (preg_match((string)$taxNumberPattern->getPattern(), $taxNumber)) {
                 return $taxNumberPattern;
             }
         }
         return null;
     }
-
-//    /**
-//     * @return TaxNumberPattern[] Returns an array of TaxNumberPattern objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?TaxNumberPattern
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

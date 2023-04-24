@@ -17,7 +17,7 @@ class TaxNumberIsValidValidator extends ConstraintValidator
     public function validate(mixed $value, Constraint $constraint): void
     {
         /** @var TaxNumberIsValid $constraint */
-        if (empty($value) || !$this->taxCalculatorService->getCountryByTaxNumber($value)) {
+        if (empty($value) || !$this->taxCalculatorService->getCountryByTaxNumber(strval($value))) {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();
         }

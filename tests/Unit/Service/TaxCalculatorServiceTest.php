@@ -33,10 +33,12 @@ class TaxCalculatorServiceTest extends TestCase
         $taxNumberPatterns = array_column($countries, 'taxNumberPattern');
 
 
-        $taxNumberPatternRepoMock = $this->createConfiguredMock(TaxNumberPatternRepository::class,
-        [
-            'findAll' => $taxNumberPatterns
-        ]);
+        $taxNumberPatternRepoMock = $this->createConfiguredMock(
+            TaxNumberPatternRepository::class,
+            [
+                'findAll' => $taxNumberPatterns,
+            ]
+        );
 
         $calculateService = new TaxCalculatorService($taxNumberPatternRepoMock);
 
@@ -46,7 +48,7 @@ class TaxCalculatorServiceTest extends TestCase
         );
     }
 
-    public function calculateDataProvider()
+    public function calculateDataProvider(): iterable
     {
         $countries = $this->makeCountriesData();
         $headPhones = (new Product())->setName('Headphones')->setPrice(100.00);
@@ -60,7 +62,7 @@ class TaxCalculatorServiceTest extends TestCase
         yield 'Phone case in Greece' => [$phoneCase, $this->getCountry('Greece', $countries), 4.8];
     }
 
-    public function taxNumberPatternDataProvider()
+    public function taxNumberPatternDataProvider(): iterable
     {
         yield 'Valid German tax number uppercase' => ['DE123456789', 'Germany'];
         yield 'Valid German tax number lowercase' => ['de123456789', 'Germany'];
@@ -69,8 +71,6 @@ class TaxCalculatorServiceTest extends TestCase
         yield 'Valid Greek tax number uppercase' => ['GR123456789', 'Greece'];
         yield 'Valid Greek tax number mixed case' => ['Gr123456789', 'Greece'];
         yield 'Invalid Greek tax number mixed case' => ['Gr12345678900', null];
-
-
     }
 
     private function makeCountriesData(): array
@@ -99,7 +99,7 @@ class TaxCalculatorServiceTest extends TestCase
                 ->setName($fixture['name']);
             $taxRate = (new TaxRate())
                 ->setValue($fixture['taxRate'])
-                ->setCountry($country);
+                ->addCountry($country);
             $taxNumberPattern = (new TaxNumberPattern())
                 ->setPattern($fixture['taxNumberPattern'])
                 ->setCountry($country);

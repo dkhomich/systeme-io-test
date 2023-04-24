@@ -26,7 +26,8 @@ class TaxCalculatorController extends AbstractController
             /** @var TaxCalculatorFormModel $formModel */
             $formModel = $form->getData();
 
-            if ($matchingPattern = $taxNumberPatternRepository->getMatchedByTaxNumber($formModel->getTaxNumber())) {
+            $matchingPattern = $taxNumberPatternRepository->getMatchedByTaxNumber($formModel->getTaxNumber());
+            if ($matchingPattern && $matchingPattern->getCountry()) {
                 $taxAmount = $taxCalculatorService->calculate($formModel->getProduct(), $matchingPattern->getCountry());
                 $formModel
                     ->setTaxAmount($taxAmount)
@@ -38,7 +39,7 @@ class TaxCalculatorController extends AbstractController
         return $this->render(
             'calculator/index.html.twig', [
                 'calculatorForm' => $form,
-                'calculationResult' => $formModel ?? null
+                'calculationResult' => $formModel ?? null,
             ]
         );
     }

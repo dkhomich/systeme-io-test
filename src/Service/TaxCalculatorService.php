@@ -21,19 +21,19 @@ class TaxCalculatorService
             // High-precision calculation if php-bcmath is installed
             return (float)bcmul(
                 (string)$product->getPrice(),
-                (string)$country->getTaxRate()->getValue() / 100,
+                (string)($country->getTaxRate()?->getValue() / 100),
                 self::TAX_AMOUNT_PRECISION
             );
         } else {
             // Default fallback
-            return round($product->getPrice() * $country->getTaxRate()->getValue() / 100, self::TAX_AMOUNT_PRECISION);
+            return round($product->getPrice() * $country->getTaxRate()?->getValue() / 100, self::TAX_AMOUNT_PRECISION);
         }
     }
 
     public function getCountryByTaxNumber(string $taxNumber): ?Country
     {
         foreach ($this->taxNumberPatternRepository->findAll() as $taxNumberPattern) {
-            if (preg_match($taxNumberPattern->getPattern(), $taxNumber)) {
+            if (preg_match((string)$taxNumberPattern->getPattern(), $taxNumber)) {
                 return $taxNumberPattern->getCountry();
             }
         }
