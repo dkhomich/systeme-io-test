@@ -20,6 +20,11 @@ class TaxRate
     #[ORM\JoinColumn(nullable: false)]
     private ?Country $country = null;
 
+    public function __toString(): string
+    {
+        return (string)$this->value;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

@@ -10,16 +10,29 @@
             </div>
         </div>
 
-        {% if calculationResult %}
+
+    </div>
+
+    {% if calculationResult %}
+        <div class="container bg-light mt-2 pt-2">
             <div class="row">
                 <h2>Calculation result</h2>
-                <p>Product: {{ calculationResult.product.name }}</p>
-                <p>Price: {{ calculationResult.product.price }} EUR</p>
-                <p>Tax: {{ calculationResult.taxAmount }} EUR ({{ calculationResult.country.taxRate.value }}% for {{ calculationResult.country.name }})</p>
-                <p>Total: {{ calculationResult.taxAmount + calculationResult.product.price}} EUR</p>
-
-
             </div>
-        {% endif %}
-    </div>
+
+            <dl class="row">
+                <dt class="col-sm-1">Product:</dt>
+                <dd class="col-sm-11">{{ calculationResult.product.name }}</dd>
+
+                <dt class="col-sm-1">Price:</dt>
+                <dd class="col-sm-11">{{ calculationResult.product.price }} EUR</dd>
+
+                <dt class="col-sm-1">Tax:</dt>
+                <dd class="col-sm-11">{{ calculationResult.taxAmount }} EUR ({{ calculationResult.country.taxRate.value }}% for {{ calculationResult.country.name }})</dd>
+
+                <dt class="col-sm-1">Total:</dt>
+                <dd class="col-sm-11">{{ calculationResult.taxAmount + calculationResult.product.price}} EUR</dd>
+            </dl>
+        </div>
+
+    {% endif %}
 {% endblock %}

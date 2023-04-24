@@ -86,6 +86,11 @@ class Country
         return $this->taxRate;
     }
 
+    public function getTaxRateValue(): ?float
+    {
+        return $this->taxRate?->getValue();
+    }
+
     public function setTaxRate(TaxRate $taxRate): self
     {
         // set the owning side of the relation if necessary

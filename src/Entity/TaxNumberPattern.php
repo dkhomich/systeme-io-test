@@ -20,6 +20,11 @@ class TaxNumberPattern
     #[ORM\JoinColumn(nullable: false)]
     private ?Country $country = null;
 
+    public function __toString(): string
+    {
+        return (string)$this->pattern;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
