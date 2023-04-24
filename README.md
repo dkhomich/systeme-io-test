@@ -48,6 +48,7 @@ GRXXXXXXXXX - для жителей Греции\
 - docker compose
 
 ### Установка
+1. ```composer install```
 1. ```docker compose up -d```
 1. ```symfony serve -d```
 1. ```symfony console doctrine:migrations:migrate```
