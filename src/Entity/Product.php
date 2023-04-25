@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -17,6 +18,7 @@ class Product
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Assert\Positive]
     private ?float $price = null;
 
     public function __toString(): string
